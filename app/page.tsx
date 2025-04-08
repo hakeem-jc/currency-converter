@@ -24,8 +24,7 @@ export default function Home() {
       <Header />
       
       <div className="flex-1 flex items-center justify-center">
-        <form className="max-w-sm md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between">
-          <h3 className="text-white text-lg pb-5">Currency Converter</h3>
+        <form className="w-96 md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between">
           <div className="mb-6">
             <label
               htmlFor="amount"
