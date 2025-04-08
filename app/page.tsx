@@ -2,6 +2,7 @@
 import { useState } from "react";
 import CurrencySelect from "@/app/components/CurrencySelect";
 import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
 export default function Home() {
   const [amount, setAmount] = useState<number>(1);
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col bg-[#181818] justify-between">
       <Header />
+      
       <div className="flex-1 flex items-center justify-center">
         <form className="max-w-sm md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between">
           <h3 className="text-white text-lg pb-5">Currency Converter</h3>
@@ -88,35 +90,7 @@ export default function Home() {
           </p>
         </form>
       </div>
-      <footer>
-        <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-          <div className="sm:flex sm:items-center sm:justify-between">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
-              HC
-            </span>
-
-            <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-400 sm:mb-0">
-              <li>
-                <a href="https://www.linkedin.com/in/hakeemclarke/" className="hover:underline me-4 md:me-6">
-                  LinkedIn
-                </a>
-              </li>
-              <li>
-                <a href="https://github.com/hakeem-jc" className="hover:underline me-4 md:me-6">
-                  GitHub
-                </a>
-              </li>
-            </ul>
-          </div>
-          <hr className="my-6 border-gray-700 sm:mx-auto lg:my-8" />
-          <span className="block text-sm text-gray-400 sm:text-center">
-            © 2025{" "}
-            <a href="https://www.hakeemclarke.com/" className="hover:underline text-white font-semibold">
-              Hakeem Clarke
-            </a>
-          </span>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
