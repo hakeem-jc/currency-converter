@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import CurrencySelect from "@/app/components/CurrencySelect";
+import Header from "@/app/components/Header";
 
 export default function Home() {
   const [amount, setAmount] = useState<number>(1);
@@ -19,6 +20,8 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-[#181818]">
+      <Header />
+      
       <form className="max-w-sm md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between">
         <h3 className="text-white text-lg pb-5">Currency Converter</h3>
         <div className="mb-6">
