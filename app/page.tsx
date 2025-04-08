@@ -19,71 +19,104 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-[#181818]">
+    <main className="flex min-h-screen flex-col bg-[#181818] justify-between">
       <Header />
-      
-      <form className="max-w-sm md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between">
-        <h3 className="text-white text-lg pb-5">Currency Converter</h3>
-        <div className="mb-6">
-          <label htmlFor="amount" className="block text-white font-medium mb-2">
-            Enter Amount
-          </label>
-          <input
-            type="number"
-            name="amount"
-            className="w-full p-3 text-white font-medium bg-[#212121] border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
-            value={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
-            required
-          />
-        </div>
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <label className="block text-white font-medium mb-2">From</label>
-            <CurrencySelect
-              selectedCurrency={fromCurrency}
-              handleCurrency={(e: any) => setFromCurrency(e.target.value)}
+      <div className="flex-1 flex items-center justify-center">
+        <form className="max-w-sm md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between">
+          <h3 className="text-white text-lg pb-5">Currency Converter</h3>
+          <div className="mb-6">
+            <label
+              htmlFor="amount"
+              className="block text-white font-medium mb-2"
+            >
+              Enter Amount
+            </label>
+            <input
+              type="number"
+              name="amount"
+              className="w-full p-3 text-white font-medium bg-[#212121] border border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
+              value={amount}
+              onChange={(e) => setAmount(Number(e.target.value))}
+              required
             />
+          </div>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <label className="block text-white font-medium mb-2">From</label>
+              <CurrencySelect
+                selectedCurrency={fromCurrency}
+                handleCurrency={(e: any) => setFromCurrency(e.target.value)}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleSwapCurrencies}
+              className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-700 border border-gray-600 transition hover:bg-gray-600 mt-7"
+            >
+              <svg
+                width="16"
+                viewBox="0 0 20 19"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M19.13 11.66H.22a.22.22 0 0 0-.22.22v1.62a.22.22 0 0 0 .22.22h16.45l-3.92 4.94a.22.22 0 0 0 .17.35h1.97c.13 0 .25-.06.33-.16l4.59-5.78a.9.9 0 0 0-.7-1.43zM19.78 5.29H3.34L7.26.35A.22.22 0 0 0 7.09 0H5.12a.22.22 0 0 0-.34.16L.19 5.94a.9.9 0 0 0 .68 1.4H19.78a.22.22 0 0 0 .22-.22V5.51a.22.22 0 0 0-.22-.22z"
+                  fill="#fff"
+                />
+              </svg>
+            </button>
+            <div>
+              <label className="block text-white font-medium mb-2">To</label>
+              <CurrencySelect
+                selectedCurrency={toCurrency}
+                handleCurrency={(e: any) => setToCurrency(e.target.value)}
+              />
+            </div>
           </div>
           <button
-            type="button"
-            onClick={handleSwapCurrencies}
-            className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-700 border border-gray-600 transition hover:bg-gray-600 mt-7"
+            type="submit"
+            className={`w-full py-3 rounded-md text-white font-semibold transition ${
+              isLoading
+                ? "opacity-70 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
+            disabled={isLoading}
           >
-            <svg
-              width="16"
-              viewBox="0 0 20 19"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M19.13 11.66H.22a.22.22 0 0 0-.22.22v1.62a.22.22 0 0 0 .22.22h16.45l-3.92 4.94a.22.22 0 0 0 .17.35h1.97c.13 0 .25-.06.33-.16l4.59-5.78a.9.9 0 0 0-.7-1.43zM19.78 5.29H3.34L7.26.35A.22.22 0 0 0 7.09 0H5.12a.22.22 0 0 0-.34.16L.19 5.94a.9.9 0 0 0 .68 1.4H19.78a.22.22 0 0 0 .22-.22V5.51a.22.22 0 0 0-.22-.22z"
-                fill="#fff"
-              />
-            </svg>
+            {isLoading ? "Getting exchange rate..." : "Get Exchange Rate"}
           </button>
-          <div>
-            <label className="block text-white font-medium mb-2">To</label>
-            <CurrencySelect
-              selectedCurrency={toCurrency}
-              handleCurrency={(e: any) => setToCurrency(e.target.value)}
-            />
+          <p className="text-white text-center font-semibold py-4 mt-4 rounded-md bg-[#181818]">
+            {result}
+          </p>
+        </form>
+      </div>
+      <footer>
+        <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+          <div className="sm:flex sm:items-center sm:justify-between">
+            <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+              HC
+            </span>
+
+            <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-400 sm:mb-0">
+              <li>
+                <a href="https://www.linkedin.com/in/hakeemclarke/" className="hover:underline me-4 md:me-6">
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/hakeem-jc" className="hover:underline me-4 md:me-6">
+                  GitHub
+                </a>
+              </li>
+            </ul>
           </div>
+          <hr className="my-6 border-gray-700 sm:mx-auto lg:my-8" />
+          <span className="block text-sm text-gray-400 sm:text-center">
+            © 2025{" "}
+            <a href="https://www.hakeemclarke.com/" className="hover:underline text-white font-semibold">
+              Hakeem Clarke
+            </a>
+          </span>
         </div>
-        <button
-          type="submit"
-          className={`w-full py-3 rounded-md text-white font-semibold transition ${
-            isLoading
-              ? "opacity-70 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
-          }`}
-          disabled={isLoading}
-        >
-          {isLoading ? "Getting exchange rate..." : "Get Exchange Rate"}
-        </button>
-        <p className="text-white text-center font-semibold py-4 mt-4 rounded-md bg-[#181818]">
-          {result}
-        </p>
-      </form>
+      </footer>
     </main>
   );
 }
