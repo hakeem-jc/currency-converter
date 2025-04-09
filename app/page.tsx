@@ -52,6 +52,7 @@ export default function Home() {
       rate,
     };
     } catch (error) {
+      console.error(error);
       setResult("Error fetching exchange rate");
     } finally {
       setIsLoading(false);
