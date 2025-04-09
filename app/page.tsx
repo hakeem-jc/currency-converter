@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef  } from "react";
 import CurrencySelect from "@/app/components/CurrencySelect";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
@@ -10,6 +10,7 @@ export default function Home() {
   const [toCurrency, setToCurrency] = useState<string>("JMD");
   const [result, setResult] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const lastRateRef = useRef<{ from: string; to: string, rate: string } | null>(null);
 
   const handleSwapCurrencies = () => {
     setFromCurrency(toCurrency);
@@ -18,6 +19,16 @@ export default function Home() {
 
   const getExchangeRate = async () => {
     if (isLoading) return;
+    const last = lastRateRef.current;
+
+    // Check cache for if FROM or TO currency has changed
+    if (last?.from === fromCurrency && last?.to === toCurrency) {
+      const rate = (Number(last.rate) * amount).toFixed(2);
+      setResult(`${amount} ${fromCurrency} = ${rate} ${toCurrency}`);
+      return;
+    }
+
+    // New currencies selected, fetch fresh data
     setIsLoading(true);
 
     try {
@@ -33,6 +44,13 @@ export default function Home() {
       const data = await response.json();
       const rate = (data.conversion_rate * amount).toFixed(2);
       setResult(`${amount} ${fromCurrency} = ${rate} ${toCurrency}`);
+
+      // Cache the latest rate and currency pair
+    lastRateRef.current = {
+      from: fromCurrency,
+      to: toCurrency,
+      rate,
+    };
     } catch (error) {
       setResult("Error fetching exchange rate");
     } finally {
@@ -115,7 +133,7 @@ export default function Home() {
             }`}
             disabled={isLoading}
           >
-            {isLoading ? "Getting exchange rate..." : "Get Exchange Rate"}
+            {isLoading ? "Getting exchange rate..." : "Calculate"}
           </button>
           <p className="text-white text-center font-semibold py-4 mt-4 rounded-md bg-[#181818]">
             {result}
