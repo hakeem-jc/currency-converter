@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CurrencySelect from "@/app/components/CurrencySelect";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
@@ -11,20 +11,53 @@ export default function Home() {
   const [result, setResult] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSwapCurrencies = () => {};
+  const handleSwapCurrencies = () => {
+    setFromCurrency(toCurrency);
+    setToCurrency(fromCurrency);
+  };
 
-  const getExchangeRate = async () => {};
+  const getExchangeRate = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/exchange", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fromCurrency, toCurrency }),
+      });
+
+      if (!response.ok) throw new Error("Error fetching exchange rate");
+      const data = await response.json();
+      const rate = (data.conversion_rate * amount).toFixed(2);
+      setResult(`${amount} ${fromCurrency} = ${rate} ${toCurrency}`);
+    } catch (error) {
+      setResult("Error fetching exchange rate");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    getExchangeRate();
   };
+
+  useEffect(() => {
+    getExchangeRate();
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col bg-[#181818] justify-between">
       <Header />
-      
+
       <div className="flex-1 flex items-center justify-center">
-        <form className="w-96 md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between">
+        <form
+          className="w-96 md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between"
+          onSubmit={handleFormSubmit}
+        >
           <div className="mb-6">
             <label
               htmlFor="amount"
