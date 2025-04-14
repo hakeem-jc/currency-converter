@@ -69,10 +69,9 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#181818] justify-between">
+    <main className="flex min-h-screen flex-col bg-[#181818]">
       <Header />
-
-      <div className="flex-1 flex items-center justify-center">
+      <section className="flex-1 flex items-center justify-center min-h-screen">
         <form
           className="w-96 md:w-96 min-h-48 p-6 rounded-lg shadow-sm bg-[#212121] flex flex-col justify-between"
           onSubmit={handleFormSubmit}
@@ -140,7 +139,7 @@ export default function Home() {
             {result}
           </p>
         </form>
-      </div>
+      </section>
       <Footer />
     </main>
   );
